@@ -65,14 +65,14 @@
             this.mainBox = Array.from(document.getElementsByClassName(this.elClass));
             for (let i = 0; i < this.mainBox.length; i++) {
                 // this.mainBox[i].style.position = "absolute";
-                this.mainBox[i].appendChild(sl.createLineSlide())
-                this.mainBox[i].classList.add(this.elClass + i) // => делаем классы для боксов с одинаковыми классами
+                this.mainBox[i].appendChild(sl.createLineSlide());
+                this.mainBox[i].classList.add(this.elClass + i) // => разделяем классы для боксов с одинаковыми классами
             }
             return this
         },
 
         ///////  PLAY SLIDER  ////////////////////////////////////
-        an: function () {
+        play: function () {
 
             let timeDefault;
             let timing = time;
@@ -97,12 +97,6 @@
                     this.animationOfName = "PutToRight_ms";
                 } else if (this.animationDirection == "PutToLeft") {
                     this.animationOfName = "PutToLeft_ms";
-                } else if (this.animationDirection == "CoverToRight") {
-                    this.animationOfName = "CoverToRight_ms";
-                } else if (this.animationDirection == "CoverToLeft") {
-                    this.animationOfName = "CoverToLeft_ms";
-                } else if (this.animationDirection == "mix") {
-                    this.animationOfName = "mix_ms";
                 }
 
                 let y = 0.2;
@@ -113,11 +107,6 @@
                     }
                 } else if (this.animationOfName == "StepToLeft_ms" || this.animationOfName == "PutToLeft_ms" || this.animationOfName == "CoverToLeft_ms") {
                     for (let i = this.arrLines.length - 1; i >= 0; i--) {
-                        this.arrLines[i].style.animationDelay = y + "s";
-                        (speed) ? y += speed : y += 0.2
-                    }
-                } else if (this.animationOfName == "mix_ms") {
-                    for (let i = 0; i < this.arrLines.length; i++) {
                         this.arrLines[i].style.animationDelay = y + "s";
                         (speed) ? y += speed : y += 0.2
                     }
@@ -132,7 +121,6 @@
                     let desc = Array.from(document.querySelectorAll('.' + elClass + i + ' > div.background_ms > div.desc_ms'));
                     let boxS = Array.from(document.querySelectorAll('.' + elClass + i + ' > div.slider_wrapper_ms > div.slider_box_ms'));
                     let firstSlidesLine = Array.from(document.querySelectorAll('.' + elClass + i + ' > div.slider_wrapper_ms > div.slider_box_ms > div.slider_lines_ms > div.first_twin_ms'));
-                    let secondSlidesLine = Array.from(document.querySelectorAll('.' + elClass + i + ' > div.slider_wrapper_ms > div.slider_box_ms > div.slider_lines_ms > div.second_twin_ms'));
                     let imgPath = Array.from(document.querySelectorAll('.' + elClass + i + '>div.background_ms'));
                     let pugBox = createSlide.createS("div", "pagination_block_ms");
                     let pugBtnBox = createSlide.createS("div", "pagination_block_btn_ms");
@@ -140,7 +128,7 @@
                     createSlide.addChild(pugBox, [pugBoxCover, pugBtnBox]);
                     for (let q = 0; q < imgPath.length; q++) {
                         let pugBtn = createSlide.createS("div", "pagination_btn_ms");
-                        pugBtn.setAttribute("data-pugnumber", q)
+                        pugBtn.setAttribute("data-pugnumber", q);
                         pugBtnBox.appendChild(pugBtn)
                     }
                     mainBox[i].appendChild(pugBox)
@@ -175,7 +163,6 @@
                     ///////  create BG Position  /////////////////////////
                     for (let q = 0; q < firstSlidesLine.length; q++) {
                         firstSlidesLine[q].style.backgroundPositionX = positionBg + "%";
-                        // secondSlidesLine[q].style.backgroundPositionX = positionBg + "%";
                         positionBg = positionBg + 5.262;  ///// initially 5.2560
                         firstSlidesLine[q].style.zIndex = "1000";
                     }
@@ -184,14 +171,14 @@
                         firstSlidesLine[q].style.backgroundImage = `url(${imgPath[countImage].dataset.path_img})`;
                         firstSlidesLine[q].style.animationName = animationOfName;
                         setTimeout(function () {
-                            boxS[0].style.backgroundSize = "100% 100%"
+                            boxS[0].style.backgroundSize = "100% 100%";
                             boxS[0].style.backgroundImage = `url(${imgPath[countImage].dataset.path_img})`;
                         }, timeOfChange + timeDefault)
                     }
                     btn[0].classList.add("btn_active_ms");
 
                     setTimeout(function () {
-                        btnBlock[0].style.zIndex = 1
+                        btnBlock[0].style.zIndex = 1;
                         for (let q = 0; q < btn.length; q++) {
                             btn[q].classList.remove("btn_disable_ms");
                             btn[q].classList.add("btn_enable_ms");
@@ -203,7 +190,7 @@
                     }, timeOfChange + 500);
 
                     setTimeout(function () {
-                        desc[0].style.opacity = 1
+                        desc[0].style.opacity = 1;
                         desc[0].style.zIndex = 100000000
                     }, timeOfChange + 500);  //// +700 ???
 
@@ -262,9 +249,7 @@
                                 boxS[0].style.backgroundImage = `url(${imgPath[countImageS].dataset.path_img})`;
                                 for (let q = 0; q < firstSlidesLine.length; q++) {
                                     firstSlidesLine[q].style.opacity = 0;
-                                    setTimeout(function () {
-                                        firstSlidesLine[q].style.animationName = "none";
-                                    }, 0)
+                                    firstSlidesLine[q].style.animationName = "none";
 
                                     setTimeout(function () {
                                         firstSlidesLine[q].style.animationName = animationOfName;
@@ -332,32 +317,29 @@
         }
     };
 
-    window.xn = sl;
-    return window.xn
+    window.MagickSlider = sl;
+    return window.MagickSlider
 
 }))();
+//// Library is end
 
-
+//// Options for "Check slider out"
 function check() {
-    let play = document.getElementById("play")
-    // let labelOfDirection = Array.from(document.getElementsByClassName("direction_check"))
-    let directCheckedFirst = document.getElementById("direction_check_1")
-    let directCheckedSecond = document.getElementById("direction_check_2")
-    let directCheckedArray = [directCheckedFirst, directCheckedSecond];
+    let play = document.getElementById("play");
+    let directCheckedFirst, directCheckedSecond;
+    let directCheckedArray = [directCheckedFirst = document.getElementById("direction_check_1"), directCheckedSecond = document.getElementById("direction_check_2")];
 
-    let animateCheckedFirst = document.getElementById("animation_check_1")
-    let animateCheckedSecond = document.getElementById("animation_check_2")
-    let animateCheckedArrey = [animateCheckedFirst, animateCheckedSecond];
+    let animateCheckedFirst, animateCheckedSecond;
+    let animateCheckedArrey = [animateCheckedFirst = document.getElementById("animation_check_1"), animateCheckedSecond = document.getElementById("animation_check_2")];
 
-    let speedValue = document.getElementById("speed")
-    let timeValue = document.getElementById("time")
+    let speedValue = document.getElementById("speed");
+    let timeValue = document.getElementById("time");
 
     let pagOff = document.getElementById("pagination_check")
 
-
     let direct = 0;
     let animation = 0;
-    let pagCheck = true;
+    // let pagCheck = true;
 
     directCheckedArray.map((el) => {
         el.addEventListener("click", function () {
@@ -371,7 +353,7 @@ function check() {
                 }
             }
         })
-    })
+    });
     animateCheckedArrey.map((el) => {
         el.addEventListener("click", function () {
             for (let i = 0; i < animateCheckedArrey.length; i++) {
@@ -384,20 +366,17 @@ function check() {
                 }
             }
         })
-    })
+    });
 
-
-    let mainBlock = document.getElementById("main_block")
-    let optionBlock = document.getElementById("option_block")
-    let sliderBlock = document.getElementById("slider_block")
+    let mainBlock = document.getElementById("main_block");
+    let sliderBlock = document.getElementById("slider_block");
     let t_copy = sliderBlock.cloneNode(true);
-
 
     function createOptions(direct, animation, speed, time, pagCheck) {
         let dir;
         let speedV;
         let timeV;
-        let pagCheced;
+        let pagCheked;
         (direct == 0 && animation == 0) ? dir = "PutToRight" : "PutToRight";
         (direct == 0 && animation == 1) ? dir = "StepToRight" : "PutToRight";
         (direct == 1 && animation == 0) ? dir = "PutToLeft" : "PutToRight";
@@ -405,52 +384,43 @@ function check() {
 
         (speed.value) ? speedV = +speed.value : speedV = 0.1;
         (time.value) ? timeV = +time.value : timeV = 2000;
-        (pagCheck.checked == true) ? pagCheced = false : pagCheced = true;
+        (pagCheck.checked == true) ? pagCheked = false : pagCheked = true;
 
-        xn.findSlider("slider_block_cover")
+        MagickSlider.findSlider("slider_block_cover")
             .time(timeV)
             .speed(speedV)
-            .pagination(pagCheced)
+            .pagination(pagCheked)
             .animationName(dir)
-            .an();
+            .play();
     }
 
     pagOff.addEventListener("click", function () {
         console.log(pagOff.checked)
-    })
+    });
 
-    // fun(direct)
     play.addEventListener("click", function () {
-        play.style.animationName = ""
+        play.style.animationName = "";
         setTimeout(function () {
             play.style.animationName = "play_button"
-        }, 100)
+        }, 100);
 
-        let sliderWrapper = Array.from(document.getElementsByClassName("slider_wrapper_ms "))
-        let pagBlock = Array.from(document.getElementsByClassName("pagination_block_ms "))
-        mainBlock = document.getElementById("main_block")
-        sliderBlock = document.getElementById("slider_block")
-        bg = Array.from(document.getElementsByClassName("p"))
+        let sliderWrapper = Array.from(document.getElementsByClassName("slider_wrapper_ms "));
+        let pagBlock = Array.from(document.getElementsByClassName("pagination_block_ms "));
+        mainBlock = document.getElementById("main_block");
+        sliderBlock = document.getElementById("slider_block");
+        bg = Array.from(document.getElementsByClassName("p"));
 
-        // bg.forEach((el)=>{
-        //     el.style.opacity = "0"
-        // })
+        sliderBlock.parentNode.removeChild(sliderBlock);
+        mainBlock.appendChild(t_copy);
 
-        sliderBlock.parentNode.removeChild(sliderBlock)
-        mainBlock.appendChild(t_copy)
-
-        sliderWrapper[0].parentNode.removeChild(sliderWrapper[0])
-        pagBlock[0].parentNode.removeChild(pagBlock[0])
+        sliderWrapper[0].parentNode.removeChild(sliderWrapper[0]);
+        pagBlock[0].parentNode.removeChild(pagBlock[0]);
 
         createOptions(direct, animation, speedValue, timeValue, pagOff)
-        for (let i = 0; i < bg.length; i++) {
-            // if(+bg[i].dataset.n == i){bg[i].style.opacity = "1"}
-        }
-
     })
 }
 
-check()
+check();
 
 // LineSlider.findSlider("box")
 //     .time(3000)
@@ -461,12 +431,12 @@ check()
 //     //     .animationName("PutToRight")
 //     .play();
 
-xn.findSlider("slider_block_cover")
+MagickSlider.findSlider("slider_block_cover")
     .time(3000)
     .speed(0.1)
     .pagination(true)
     .animationName("PutToRight")
-    .an();
+    .play();
 
 // LineSlider.findSlider("slider_block_cover_2")
 //     .time(3000)
