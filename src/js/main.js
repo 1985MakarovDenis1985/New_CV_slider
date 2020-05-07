@@ -31,11 +31,11 @@
 
             let sliderApearMs = createSlide.createS("div", "slider_box_ms");
             let sliderBox = createSlide.createS("div", "slider_wrapper_ms ");
+            for (let i = 0; i < 20; i++) {  /// => create line in
+                createSlide.addChild(sliderApearMs, [createSlide.addChild(createSlide.createS("div", "slider_lines_ms"), [createSlide.createS("div", "slider_lines_twin_ms first_twin_ms")])]);
+            }
             sliderBox.appendChild(sliderApearMs);
 
-            for (let i = 0; i < 20; i++) {  /// => create line in
-                createSlide.addChild(sliderApearMs, [createSlide.addChild(createSlide.createS("div", "slider_lines_ms"), [createSlide.createS("div", "slider_lines_twin_ms first_twin_ms"), createSlide.createS("div", "slider_lines_twin_ms second_twin_ms")])]);
-            }
             return sliderBox
         },
 
@@ -74,11 +74,11 @@
         ///////  PLAY SLIDER  ////////////////////////////////////
         play: function () {
 
+            this.animationDirection = animationDirection;
             let timeDefault;
             let timing = time;
             let lastLine;
             let timeOfChange;
-            this.animationDirection = animationDirection;
             let positionBg = -0;
             let countImage = 0;
             let interval;
@@ -86,7 +86,7 @@
             for (let i = 0; i < this.mainBox.length; i++) {
                 this.arrLines = Array.from(document.querySelectorAll('.' + this.elClass + i + ' > div.slider_wrapper_ms > div.slider_box_ms > div.slider_lines_ms > div.first_twin_ms'));
                 for (let q = 0; q < this.arrLines.length; q++) {
-                    this.arrLines[q].setAttribute("data-number_line", q);
+                    // this.arrLines[q].setAttribute("data-number_line", q);
                 }
 
                 if (this.animationDirection == "StepToRight") {
@@ -114,14 +114,13 @@
             }
 
             /////  CREATE DIRECTIONS AND ANIMATION`S NAMES /////////
-
             function playPag(mainBox, elClass, animationOfName) {
                 for (let i = 0; i < mainBox.length; i++) {
-
                     let desc = Array.from(document.querySelectorAll('.' + elClass + i + ' > div.background_ms > div.desc_ms'));
                     let boxS = Array.from(document.querySelectorAll('.' + elClass + i + ' > div.slider_wrapper_ms > div.slider_box_ms'));
                     let firstSlidesLine = Array.from(document.querySelectorAll('.' + elClass + i + ' > div.slider_wrapper_ms > div.slider_box_ms > div.slider_lines_ms > div.first_twin_ms'));
                     let imgPath = Array.from(document.querySelectorAll('.' + elClass + i + '>div.background_ms'));
+
                     let pugBox = createSlide.createS("div", "pagination_block_ms");
                     let pugBtnBox = createSlide.createS("div", "pagination_block_btn_ms");
                     let pugBoxCover = createSlide.createS("div", "pagination_block_cover_ms");
@@ -148,17 +147,15 @@
                         })
                     }
 
-                    if (animationOfName == "StepToRight_ms" || animationOfName == "PutToRight_ms" || animationOfName == "CoverToRight_ms") {
+                    if (animationOfName == "StepToRight_ms" || animationOfName == "PutToRight_ms") {
                         lastLine = getComputedStyle(firstSlidesLine[firstSlidesLine.length - 1]).animationDelay;
-                    } else if (animationOfName == "StepToLeft_ms" || animationOfName == "PutToLeft_ms" || animationOfName == "CoverToLeft_ms") {
+                    } else if (animationOfName == "StepToLeft_ms" || animationOfName == "PutToLeft_ms") {
                         lastLine = getComputedStyle(firstSlidesLine[0]).animationDelay;
                     }
 
                     ////////  Timing  /////////////////////////////////////
                     timeOfChange = parseInt(lastLine + 1000) * 1000;
                     (timing) ? timeDefault = timing : timeDefault = 1000;
-                    console.log("...");
-
 
                     ///////  create BG Position  /////////////////////////
                     for (let q = 0; q < firstSlidesLine.length; q++) {
@@ -166,18 +163,19 @@
                         positionBg = positionBg + 5.262;  ///// initially 5.2560
                         firstSlidesLine[q].style.zIndex = "1000";
                     }
-                    ////////  create FIRST IMG  //////////////////////////
-                    for (let q = 0; q < firstSlidesLine.length; q++) {
-                        firstSlidesLine[q].style.backgroundImage = `url(${imgPath[countImage].dataset.path_img})`;
-                        firstSlidesLine[q].style.animationName = animationOfName;
-                        setTimeout(function () {
-                            boxS[0].style.backgroundSize = "100% 100%";
-                            boxS[0].style.backgroundImage = `url(${imgPath[countImage].dataset.path_img})`;
-                        }, timeOfChange + timeDefault)
-                    }
+                    ////////  create FIRST IMG  ///////////        //// => was in version 1.1
+                    // for (let q = 0; q < firstSlidesLine.length; q++) {
+                    //     firstSlidesLine[q].style.backgroundImage = `url(${imgPath[countImage].dataset.path_img})`;
+                    //     firstSlidesLine[q].style.animationName = animationOfName;
+                    //     setTimeout(function () {
+                    //         boxS[0].style.backgroundSize = "100% 100%";
+                    //         boxS[0].style.backgroundImage = `url(${imgPath[countImage].dataset.path_img})`;
+                    //     }, timeOfChange + timeDefault)
+                    // }
                     btn[0].classList.add("btn_active_ms");
 
-                    setTimeout(function () {
+                    //// for first opened paginations
+                    setTimeout(function () {                 //// =>  => was in version 1.1
                         btnBlock[0].style.zIndex = 1;
                         for (let q = 0; q < btn.length; q++) {
                             btn[q].classList.remove("btn_disable_ms");
@@ -189,16 +187,17 @@
                         }
                     }, timeOfChange + 500);
 
-                    setTimeout(function () {
-                        desc[0].style.opacity = 1;
-                        desc[0].style.zIndex = 100000000
-                    }, timeOfChange + 500);  //// +700 ???
+                    // setTimeout(function () {                 /// =>  => was in version 1.1
+                    //     desc[0].style.opacity = 1;
+                    //     desc[0].style.zIndex = 100000000
+                    // }, timeOfChange + 500);  //// +700 ???
 
                     let countImageS;
 
                     let startPlay = function (countImg) {
                         countImageS = +countImg;
 
+                        //// => start first slide
                         for (let q = 0; q < firstSlidesLine.length; q++) {
                             firstSlidesLine[q].style.opacity = 0;
                             firstSlidesLine[q].style.animationName = "none";
@@ -208,12 +207,14 @@
                                 firstSlidesLine[q].style.backgroundImage = `url(${imgPath[countImageS].dataset.path_img})`;
                             }, 70);
                         }
+                        //// ----------------------
 
                         interval = setInterval(function () {
                             desc[countImageS].style.opacity = 0;
                             desc[countImageS].style.zIndex = 0;
                             btnBlock[0].style.zIndex = 1000;
 
+                            // add disable block pug
                             for (let c = 0; c < btn.length; c++) {
                                 btn[c].classList.remove("btn_enable_ms");
                                 btn[c].classList.remove("btn_active_ms");
@@ -230,9 +231,10 @@
 
                             setTimeout(function () {
                                 desc[countImageS].style.opacity = 1;
-                                desc[countImageS].style.zIndex = 10000000000;
+                                desc[countImageS].style.zIndex = 100000;
                                 btnBlock[0].style.zIndex = 1;
 
+                                // add enable block pug
                                 for (let c = 0; c < btn.length; c++) {
                                     btn[c].classList.remove("btn_disable_ms");
                                     btn[c].classList.remove("btn_active_ms");
@@ -241,7 +243,6 @@
                                     if (btn[c].dataset.pugnumber == +countImageS) {  //// big pug
                                         btn[c].classList.add("btn_active_ms");
                                     }
-
                                 }
                             }, timeOfChange + 700);
 
@@ -267,9 +268,9 @@
 
                     let secondPlay = function (countImg) {
                         setTimeout(function () {
-                            desc[countImg].style.opacity = 1
-                            desc[countImg].style.zIndex = 100000000
-                            btnBlock[0].style.zIndex = 1
+                            desc[countImg].style.opacity = 1;
+                            desc[countImg].style.zIndex = 100000000;
+                            btnBlock[0].style.zIndex = 1;
 
                             for (let c = 0; c < btn.length; c++) {
                                 btn[c].classList.remove("btn_disable_ms");
@@ -324,7 +325,7 @@
 //// Library is end
 
 //// Options for "Check slider out"
-function check() {
+function playWithOption() {
     let play = document.getElementById("play");
     let directCheckedFirst, directCheckedSecond;
     let directCheckedArray = [directCheckedFirst = document.getElementById("direction_check_1"), directCheckedSecond = document.getElementById("direction_check_2")];
@@ -370,13 +371,10 @@ function check() {
 
     let mainBlock = document.getElementById("main_block");
     let sliderBlock = document.getElementById("slider_block");
-    let t_copy = sliderBlock.cloneNode(true);
+    let cloneSliderBlock = sliderBlock.cloneNode(true);
 
     function createOptions(direct, animation, speed, time, pagCheck) {
-        let dir;
-        let speedV;
-        let timeV;
-        let pagCheked;
+        let dir, speedV, timeV, pagCheked;
         (direct == 0 && animation == 0) ? dir = "PutToRight" : "PutToRight";
         (direct == 0 && animation == 1) ? dir = "StepToRight" : "PutToRight";
         (direct == 1 && animation == 0) ? dir = "PutToLeft" : "PutToRight";
@@ -411,7 +409,7 @@ function check() {
         bg = Array.from(document.getElementsByClassName("p"));
 
         sliderBlock.parentNode.removeChild(sliderBlock);
-        mainBlock.appendChild(t_copy);
+        mainBlock.appendChild(cloneSliderBlock);
 
         sliderWrapper[0].parentNode.removeChild(sliderWrapper[0]);
         pagBlock[0].parentNode.removeChild(pagBlock[0]);
@@ -420,7 +418,7 @@ function check() {
     })
 }
 
-check();
+playWithOption();
 
 // LineSlider.findSlider("box")
 //     .time(3000)
