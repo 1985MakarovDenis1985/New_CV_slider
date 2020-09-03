@@ -29,12 +29,12 @@
         /////////  CREATE SLIDER INSIDE YOUR CLASS  //////
         createLineSlide: function () {
 
-            let sliderApearMs = createSlide.createS("div", "slider_box_ms");
+            let sliderAppearMs = createSlide.createS("div", "slider_box_ms");
             let sliderBox = createSlide.createS("div", "slider_wrapper_ms ");
             for (let i = 0; i < 20; i++) {  /// => create line in
-                createSlide.addChild(sliderApearMs, [createSlide.addChild(createSlide.createS("div", "slider_lines_ms"), [createSlide.createS("div", "slider_lines_twin_ms first_twin_ms")])]);
+                createSlide.addChild(sliderAppearMs, [createSlide.addChild(createSlide.createS("div", "slider_lines_ms"), [createSlide.createS("div", "slider_lines_twin_ms first_twin_ms")])]);
             }
-            sliderBox.appendChild(sliderApearMs);
+            sliderBox.appendChild(sliderAppearMs);
 
             return sliderBox
         },
@@ -59,7 +59,7 @@
             return this
         },
 
-        ///////  FINDE SLIDER  ////////////////////////////////////
+        ///////  FIND SLIDER  ////////////////////////////////////
         findSlider: function (elementClass) {
             this.elClass = elementClass;
             this.mainBox = Array.from(document.getElementsByClassName(this.elClass));
@@ -85,27 +85,27 @@
 
             for (let i = 0; i < this.mainBox.length; i++) {
                 this.arrLines = Array.from(document.querySelectorAll('.' + this.elClass + i + ' > div.slider_wrapper_ms > div.slider_box_ms > div.slider_lines_ms > div.first_twin_ms'));
-                for (let q = 0; q < this.arrLines.length; q++) {
-                    // this.arrLines[q].setAttribute("data-number_line", q);
-                }
+                // for (let q = 0; q < this.arrLines.length; q++) {
+                //     // this.arrLines[q].setAttribute("data-number_line", q);
+                // }
 
-                if (this.animationDirection == "StepToRight") {
+                if (this.animationDirection === "StepToRight") {
                     this.animationOfName = "StepToRight_ms"
-                } else if (this.animationDirection == "StepToLeft") {
+                } else if (this.animationDirection === "StepToLeft") {
                     this.animationOfName = "StepToLeft_ms";
-                } else if (this.animationDirection == "PutToRight") {
+                } else if (this.animationDirection === "PutToRight") {
                     this.animationOfName = "PutToRight_ms";
-                } else if (this.animationDirection == "PutToLeft") {
+                } else if (this.animationDirection === "PutToLeft") {
                     this.animationOfName = "PutToLeft_ms";
                 }
 
                 let y = 0.2;
-                if (this.animationOfName == "StepToRight_ms" || this.animationOfName == "PutToRight_ms" || this.animationOfName == "CoverToRight_ms") {
+                if (this.animationOfName === "StepToRight_ms" || this.animationOfName === "PutToRight_ms" || this.animationOfName === "CoverToRight_ms") {
                     for (let i = 0; i < this.arrLines.length; i++) {
                         this.arrLines[i].style.animationDelay = y + "s";
                         (speed) ? y += speed : y += 0.2
                     }
-                } else if (this.animationOfName == "StepToLeft_ms" || this.animationOfName == "PutToLeft_ms" || this.animationOfName == "CoverToLeft_ms") {
+                } else if (this.animationOfName === "StepToLeft_ms" || this.animationOfName === "PutToLeft_ms" || this.animationOfName === "CoverToLeft_ms") {
                     for (let i = this.arrLines.length - 1; i >= 0; i--) {
                         this.arrLines[i].style.animationDelay = y + "s";
                         (speed) ? y += speed : y += 0.2
@@ -137,25 +137,26 @@
                     let btnBlock = Array.from(document.querySelectorAll('.' + elClass + i + ' > div.pagination_block_ms > div.pagination_block_cover_ms'));
                     let pugBlock = Array.from(document.querySelectorAll('.' + elClass + i + ' > div.pagination_block_ms'))
 
-                    if (pagination == false) {
+                    if (pagination === false) {
                         pugBlock.map((el) => {
                             el.style.display = "none"
                         })
-                    } else if (pagination == true) {
+                    } else if (pagination === true) {
                         pugBlock.map((el) => {
                             el.style.display = "block"
                         })
                     }
 
-                    if (animationOfName == "StepToRight_ms" || animationOfName == "PutToRight_ms") {
+                    if (animationOfName === "StepToRight_ms" || animationOfName === "PutToRight_ms") {
                         lastLine = getComputedStyle(firstSlidesLine[firstSlidesLine.length - 1]).animationDelay;
-                    } else if (animationOfName == "StepToLeft_ms" || animationOfName == "PutToLeft_ms") {
+                    } else if (animationOfName === "StepToLeft_ms" || animationOfName === "PutToLeft_ms") {
                         lastLine = getComputedStyle(firstSlidesLine[0]).animationDelay;
                     }
 
                     ////////  Timing  /////////////////////////////////////
                     timeOfChange = parseInt(lastLine + 1000) * 1000;
                     (timing) ? timeDefault = timing : timeDefault = 1000;
+                    console.log(timing)
 
                     ///////  create BG Position  /////////////////////////
                     for (let q = 0; q < firstSlidesLine.length; q++) {
@@ -176,7 +177,7 @@
 
                     //// for first opened paginations
                     setTimeout(function () {                 //// =>  => was in version 1.1
-                        btnBlock[0].style.zIndex = 1;
+                        btnBlock[0].style.zIndex = "1";
                         for (let q = 0; q < btn.length; q++) {
                             btn[q].classList.remove("btn_disable_ms");
                             btn[q].classList.add("btn_enable_ms");
@@ -187,19 +188,18 @@
                         }
                     }, timeOfChange + 500);
 
-                    // setTimeout(function () {                 /// =>  => was in version 1.1
+                    // setTimeout(function () {                 /// => was in version 1.1
                     //     desc[0].style.opacity = 1;
                     //     desc[0].style.zIndex = 100000000
                     // }, timeOfChange + 500);  //// +700 ???
 
                     let countImageS;
-
                     let startPlay = function (countImg) {
                         countImageS = +countImg;
 
                         //// => start first slide
                         for (let q = 0; q < firstSlidesLine.length; q++) {
-                            firstSlidesLine[q].style.opacity = 0;
+                            firstSlidesLine[q].style.opacity = "0";
                             firstSlidesLine[q].style.animationName = "none";
 
                             setTimeout(function () {
@@ -210,9 +210,9 @@
                         //// ----------------------
 
                         interval = setInterval(function () {
-                            desc[countImageS].style.opacity = 0;
-                            desc[countImageS].style.zIndex = 0;
-                            btnBlock[0].style.zIndex = 1000;
+                            desc[countImageS].style.opacity = "0";
+                            desc[countImageS].style.zIndex = "0";
+                            btnBlock[0].style.zIndex = "1000";
 
                             // add disable block pug
                             for (let c = 0; c < btn.length; c++) {
@@ -230,9 +230,9 @@
                             }
 
                             setTimeout(function () {
-                                desc[countImageS].style.opacity = 1;
-                                desc[countImageS].style.zIndex = 100000;
-                                btnBlock[0].style.zIndex = 1;
+                                desc[countImageS].style.opacity = "1";
+                                desc[countImageS].style.zIndex = "100000";
+                                btnBlock[0].style.zIndex = "1";
 
                                 // add enable block pug
                                 for (let c = 0; c < btn.length; c++) {
@@ -249,7 +249,7 @@
                             for (let i = 0; i < boxS.length; i++) {
                                 boxS[0].style.backgroundImage = `url(${imgPath[countImageS].dataset.path_img})`;
                                 for (let q = 0; q < firstSlidesLine.length; q++) {
-                                    firstSlidesLine[q].style.opacity = 0;
+                                    firstSlidesLine[q].style.opacity = "0";
                                     firstSlidesLine[q].style.animationName = "none";
 
                                     setTimeout(function () {
@@ -268,16 +268,16 @@
 
                     let secondPlay = function (countImg) {
                         setTimeout(function () {
-                            desc[countImg].style.opacity = 1;
-                            desc[countImg].style.zIndex = 100000000;
-                            btnBlock[0].style.zIndex = 1;
+                            desc[countImg].style.opacity = "1";
+                            desc[countImg].style.zIndex = "100000000";
+                            btnBlock[0].style.zIndex = "1";
 
                             for (let c = 0; c < btn.length; c++) {
                                 btn[c].classList.remove("btn_disable_ms");
                                 btn[c].classList.remove("btn_active_ms");
                                 btn[c].classList.add("btn_enable_ms");
                             }
-                            if (btn[countImageS].dataset.pugnumber == countImageS) {
+                            if (btn[countImageS].dataset.pugnumber === countImageS) {
                                 btn[countImageS].classList.add("btn_active_ms");
                             }
                         }, timeOfChange + 500);  //// +700 ???
@@ -287,9 +287,9 @@
                     btn.map((el) => {
                         el.addEventListener("click", function (e) {
                             clearInterval(interval);
-                            desc[countImageS].style.opacity = 0;
-                            desc[countImageS].style.zIndex = 0;
-                            btnBlock[0].style.zIndex = 1000000;
+                            desc[countImageS].style.opacity = "0";
+                            desc[countImageS].style.zIndex = "0";
+                            btnBlock[0].style.zIndex = "1000000";
 
                             for (let c = 0; c < btn.length; c++) {
                                 btn[c].classList.remove("btn_enable_ms");
@@ -324,14 +324,14 @@
 }))();
 //// Library is end
 
-//// Options for "Check slider out"
+//// Options for "Check slider out"  -- for portfolio
 function playWithOption() {
     let play = document.getElementById("play");
     let directCheckedFirst, directCheckedSecond;
     let directCheckedArray = [directCheckedFirst = document.getElementById("direction_check_1"), directCheckedSecond = document.getElementById("direction_check_2")];
 
     let animateCheckedFirst, animateCheckedSecond;
-    let animateCheckedArrey = [animateCheckedFirst = document.getElementById("animation_check_1"), animateCheckedSecond = document.getElementById("animation_check_2")];
+    let animateCheckedArray = [animateCheckedFirst = document.getElementById("animation_check_1"), animateCheckedSecond = document.getElementById("animation_check_2")];
 
     let speedValue = document.getElementById("speed");
     let timeValue = document.getElementById("time");
@@ -345,23 +345,23 @@ function playWithOption() {
     directCheckedArray.map((el) => {
         el.addEventListener("click", function () {
             for (let i = 0; i < directCheckedArray.length; i++) {
-                if (directCheckedArray[i].checked == true) {
-                    if (directCheckedArray[i] == directCheckedFirst) {
+                if (directCheckedArray[i].checked === true) {
+                    if (directCheckedArray[i] === directCheckedFirst) {
                         direct = 0
-                    } else if (directCheckedArray[i] == directCheckedSecond) {
+                    } else if (directCheckedArray[i] === directCheckedSecond) {
                         direct = 1
                     }
                 }
             }
         })
     });
-    animateCheckedArrey.map((el) => {
+    animateCheckedArray.map((el) => {
         el.addEventListener("click", function () {
-            for (let i = 0; i < animateCheckedArrey.length; i++) {
-                if (animateCheckedArrey[i].checked == true) {
-                    if (animateCheckedArrey[i] == animateCheckedFirst) {
+            for (let i = 0; i < animateCheckedArray.length; i++) {
+                if (animateCheckedArray[i].checked == true) {
+                    if (animateCheckedArray[i] == animateCheckedFirst) {
                         animation = 0
-                    } else if (animateCheckedArrey[i] == animateCheckedSecond) {
+                    } else if (animateCheckedArray[i] == animateCheckedSecond) {
                         animation = 1
                     }
                 }
@@ -375,14 +375,14 @@ function playWithOption() {
 
     function createOptions(direct, animation, speed, time, pagCheck) {
         let dir, speedV, timeV, pagCheked;
-        (direct == 0 && animation == 0) ? dir = "PutToRight" : "PutToRight";
-        (direct == 0 && animation == 1) ? dir = "StepToRight" : "PutToRight";
-        (direct == 1 && animation == 0) ? dir = "PutToLeft" : "PutToRight";
-        (direct == 1 && animation == 1) ? dir = "StepToLeft" : "PutToRight";
+        (direct === 0 && animation === 0) ? dir = "PutToRight" : "PutToRight";
+        (direct === 0 && animation === 1) ? dir = "StepToRight" : "PutToRight";
+        (direct === 1 && animation === 0) ? dir = "PutToLeft" : "PutToRight";
+        (direct === 1 && animation === 1) ? dir = "StepToLeft" : "PutToRight";
 
         (speed.value) ? speedV = +speed.value : speedV = 0.1;
         (time.value) ? timeV = +time.value : timeV = 2000;
-        (pagCheck.checked == true) ? pagCheked = false : pagCheked = true;
+        (pagCheck.checked === true) ? pagCheked = false : pagCheked = true;
 
         MagickSlider.findSlider("slider_block_cover")
             .time(timeV)
@@ -406,7 +406,7 @@ function playWithOption() {
         let pagBlock = Array.from(document.getElementsByClassName("pagination_block_ms "));
         mainBlock = document.getElementById("main_block");
         sliderBlock = document.getElementById("slider_block");
-        bg = Array.from(document.getElementsByClassName("p"));
+        // bg = Array.from(document.getElementsByClassName("p"));
 
         sliderBlock.parentNode.removeChild(sliderBlock);
         mainBlock.appendChild(cloneSliderBlock);
@@ -420,14 +420,6 @@ function playWithOption() {
 
 playWithOption();
 
-// LineSlider.findSlider("box")
-//     .time(3000)
-//     .speed(0.1)
-//     .pagination(true)
-//     // .animationName("PutToRight")
-//     //     .animationName("StepToRight")
-//     //     .animationName("PutToRight")
-//     .play();
 
 MagickSlider.findSlider("slider_block_cover")
     .time(3000)
