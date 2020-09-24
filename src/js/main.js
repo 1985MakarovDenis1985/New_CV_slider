@@ -5,7 +5,7 @@
     let animationDirection = "StepToRight";
     let speed = .2;
     let lineDuration = .5;
-    let pagination = false;
+    let pagination = false
 
 /////////  TEMPLATE SLIDER BOX  //////////////////////////
     const createSlide = {
@@ -26,7 +26,7 @@
     };
 
 /////////  SLIDER OBJECT /////////////////////////////////
-    const sl = {
+    const createNewSlider = {
         /////////  CREATE SLIDER INSIDE YOUR CLASS  //////
 
         time: function (timing) {
@@ -67,16 +67,19 @@
         },
 
         createPaginationBox: function () {
-            let paginationBox;
-            return paginationBox = createSlide.addChild(createSlide.createS("div", "pag_box_ms"), [createSlide.createS("div", "pag_cover_ms"), createSlide.createS("div", "pag_btn_ms")])
+            const pugBox = createSlide.createS("div", "pag_btn_container_ms")
+            Array.from(document.querySelectorAll(`.${this.elClass} > div.background_ms`)).map((el, index) => pugBox.appendChild(createSlide.createS("div", "pag_btn_ms", null, [{
+                "name": "data-number",
+                "value": index
+            }])));
+            const paginationBox = createSlide.addChild(createSlide.createS("div", "pag_box_ms"), [createSlide.createS("div", "pag_cover_ms"), pugBox])
+            return paginationBox
         },
 
         ///////  FIND SLIDER  ////////////////////////////////////
         findSlider: function (elementClass) {
             this.elClass = elementClass;
-            this.mainBox = document.getElementById(this.elClass);
-            this.mainBox.appendChild(sl.createLineSlide());
-            this.mainBox.appendChild(sl.createPaginationBox());
+            this.mainBox = createSlide.addChild(document.getElementById(this.elClass), [createNewSlider.createLineSlide(), createNewSlider.createPaginationBox()])
             this.mainBox.style.position = "relative"
             return this
         },
@@ -112,90 +115,161 @@
                 }
             }
 
+
             (function createS(sliderAnimationName, elClass) {
-
-                let lastLine, timeOfChange, backgroundPosition = 0, countImage = 0;
+                let lastLine, timeOfChange, backgroundPosition = 0, intervalChangeSlide, countImage = 0;
                 const desc = Array.from(document.querySelectorAll(`.${elClass} > div.background_ms > div.desc_ms`));
-                const boxS = Array.from(document.querySelectorAll(`.${elClass} > div.slider_wrapper_ms > div.slider_box_ms`));
-                const imgPath = Array.from(document.querySelectorAll(`.${elClass}> div.background_ms`));
+                const boxS = document.querySelector(`.${elClass} > div.slider_wrapper_ms > div.slider_box_ms`);
+                const imgPath = Array.from(document.querySelectorAll(`.${elClass} > div.background_ms`));
+                const pagContainer = document.querySelector(`.${elClass} > div.pag_box_ms`)
+                const pagBtn = Array.from(document.querySelectorAll(`.${elClass} > div.pag_box_ms > div.pag_btn_container_ms > div.pag_btn_ms`));
+                const pagCover = document.querySelector(`.${elClass} > div.pag_box_ms > div.pag_cover_ms`)
+                pagBtn[0].classList.add("pag_btn_active_ms")
 
-                ////////  VALUE DELAY LAST LINE  /////////////////////////////////////
+
+                //// ---- VALUE DELAY LAST LINE ----
                 if (sliderAnimationName === "StepToRight_ms" || sliderAnimationName === "PutToRight_ms") {
                     lastLine = getComputedStyle(arrLines[arrLines.length - 1]).animationDelay;
                 } else if (sliderAnimationName === "StepToLeft_ms" || sliderAnimationName === "PutToLeft_ms") {
                     lastLine = getComputedStyle(arrLines[0]).animationDelay;
                 }
 
-                ////////  Timing  /////////////////////////////////////
+                //// ---- Timing ----
                 timeOfChange = (parseInt(lastLine) + lineDuration) * 1000;
                 (time) ? time = time : time = 1500;
 
-                ///////  Create BG Position  /////////////////////////
+                //// ---- Create BG Position ----
                 arrLines.map((el) => {
                     el.style.backgroundPositionX = backgroundPosition + "%"
                     backgroundPosition = backgroundPosition + 5.25;
                     el.style.zIndex = "1000"
-
-                    ///////  Create first IMG of slide  /////////////////////////
-                    el.style.backgroundImage = `url(${imgPath[countImage].dataset.path_img})`;
-                    el.style.animationName = sliderAnimationName; // will do separated option
                 })
 
-                ///// Appear first desc of slide and first BG
-                boxS[0].style.backgroundImage = `url(${imgPath[imgPath.length - 1].dataset.path_img})`;
-                setTimeout(() => {
-                    desc[0].style.opacity = "1"
-                }, timeOfChange)
-
-                let intervalChangeSlide = setInterval(() => {
-                    new Promise(res => {
-                        /////// Remove animation of line
-                        arrLines.map((el) => {
-                            el.style.animationName = "nothing"
-                        })
-                        desc.map(el => {
-                            el.style.opacity = "0"
-                        })
-                        res()
-                    }).then(() => {
-                        ////////  Set animation of line
+                function firstPlaySlide() {
+                    arrLines.map((el) => {
+                        //// ---- Create first IMG of slide ----
+                        el.style.animationName = "nothing"; // will do separated option
                         setTimeout(() => {
-                            (countImage === imgPath.length - 1) ? countImage = 0 : countImage = countImage += 1
-                            arrLines.map((el) => {
-                                el.style.animationName = sliderAnimationName;
-                                el.style.backgroundImage = `url(${imgPath[countImage].dataset.path_img})`;
-                            });
-                            (countImage === 0) ? boxS[0].style.backgroundImage = `url(${imgPath[imgPath.length - 1].dataset.path_img})` : boxS[0].style.backgroundImage = `url(${imgPath[countImage - 1].dataset.path_img})`;
-
-                            //////// Animation Description
-                            setTimeout(() => {
-                                desc[countImage].style.opacity = "1"
-                            }, timeOfChange)
+                            el.style.backgroundImage = `url(${imgPath[countImage].dataset.path_img})`;
+                            el.style.animationName = sliderAnimationName; // will do separated option
                         }, 100)
-                    })
-                }, timeOfChange + time)
+                    });
+                    //// ---- Open pagination ----
+                    pagCover.style.zIndex = "100"
+                    ///// Appear first desc of slide and first BG
+                    setTimeout(() => {
+                        //// ---- Close pagination ----
+                        pagCover.style.zIndex = "1"
+                        //// ---- Description block is appearing ----
+                        desc[countImage].style.opacity = "1"
+                    }, timeOfChange)
+                }
+                firstPlaySlide();
 
+                function activeBtn(){
+                    pagBtn.map(el=>{el.classList.remove("pag_btn_active_ms")});
+                    (countImage == imgPath.length -1) ? (pagBtn[0].classList.add("pag_btn_active_ms")) : pagBtn[countImage+1].classList.add("pag_btn_active_ms")
+                }
+
+                ///// Func RUN Slider with interval
+                function changeSlider() {
+                    intervalChangeSlide = setInterval(() => {
+                        activeBtn()
+                        new Promise(res => {
+                            //// ---- Open pagination ----
+                            pagCover.style.zIndex = "100"
+
+                            //// ---- Remove animation of line ----
+                            arrLines.map((el) => {
+                                el.style.animationName = "nothing"
+                            })
+                            //// ---- Description block is disappearing ----
+                            desc.map(el => {
+                                el.style.opacity = "0"
+                            })
+                            res()
+                        }).then(() => {
+                            //// ---- Set animation of line ----
+                            setTimeout(() => {
+                                (countImage === imgPath.length - 1) ? countImage = 0 : countImage = countImage += 1
+                                arrLines.map((el) => {
+                                    el.style.animationName = sliderAnimationName;
+                                    el.style.backgroundImage = `url(${imgPath[countImage].dataset.path_img})`;
+                                });
+                                (countImage === 0) ? boxS.style.backgroundImage = `url(${imgPath[imgPath.length - 1].dataset.path_img})` : boxS.style.backgroundImage = `url(${imgPath[countImage - 1].dataset.path_img})`;
+                                //// ---- Animation Description ----
+                                setTimeout(() => {
+                                    pagCover.style.zIndex = "1"
+                                    desc[countImage].style.opacity = "1"
+                                }, timeOfChange)
+                            }, 100)
+                        })
+                    }, timeOfChange + time)
+                }
+
+                function setSlideUsePagination() {
+                    pagBtn.map((el) => {
+
+                        el.addEventListener("click", (e) => {
+                            clearInterval(intervalChangeSlide)
+                            pagBtn.map(el=>{
+                                pagBtn.map(el=>{el.classList.remove("pag_btn_active_ms")})
+                            })
+                            pagBtn[e.target.dataset.number].classList.add("pag_btn_active_ms")
+                            new Promise((res, rej) => {
+                                try {
+                                    boxS.style.backgroundImage = `url(${imgPath[countImage].dataset.path_img})`
+                                    desc[countImage].style.opacity = "0"
+                                    res()
+                                } catch (rej) {
+                                    console.error(rej)
+                                }
+
+                            }).then(() => {
+                                countImage = +e.target.dataset.number
+                                firstPlaySlide()
+                                changeSlider()
+                            })
+                        })
+                    })
+                }
+
+                changeSlider();
+                (pagination) ? (pagContainer.style.display = "block", setSlideUsePagination()) : pagContainer.style.display = "none";
             })(this.animationOfName, this.elClass)
 
             time = 1500;
             speed = .2;
             lineDuration = .5;
+            pagination = false
+            // return this
         }
     };
 
-    window.MagickSlider = sl;
+    window.MagickSlider = createNewSlider;
     return window.MagickSlider
 
 }))();
 //// Library is end
 
-// -- Example -- //
+//// Options for "Check slider out"  -- for portfolio
 
-// MagickSlider.findSlider("your_class")
+
+// MagickSlider.findSlider("slider_block_1")
 //     .time(3000)
 //     .lineDuration(.2)
 //     .speed(0.1)
+//     .pagination(true)
 //     .animationDirection("PutToRight")
+//     .play();
+//
+//
+// MagickSlider.findSlider("slider_block_2")
+//     .time(2000)
+//     .lineDuration(.5)
+//     .speed(0.2)
+//     .pagination(true)
+//     .animationDirection("StepToLeft")
 //     .play();
 
 
