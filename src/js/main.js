@@ -79,7 +79,7 @@
         ///////  FIND SLIDER  ////////////////////////////////////
         findSlider: function (elementClass) {
             this.elClass = elementClass;
-            this.mainBox = createSlide.addChild(document.getElementById(this.elClass), [createNewSlider.createLineSlide(), createNewSlider.createPaginationBox()])
+            this.mainBox = createSlide.addChild(document.querySelector(`.${this.elClass}`), [createNewSlider.createLineSlide(), createNewSlider.createPaginationBox()])
             this.mainBox.style.position = "relative"
             return this
         },
@@ -251,22 +251,22 @@
 
 }))();
 
-MagickSlider.findSlider("slider_block_1")
-    .time(3000)
-    .lineDuration(.2)
-    .speed(0.1)
-    .pagination(true)
-    .animationDirection("PutToRight")
-    .play();
-
-
-MagickSlider.findSlider("slider_block_2")
-    .time(2000)
-    .lineDuration(.5)
-    .speed(0.2)
-    .pagination(true)
-    .animationDirection("StepToLeft")
-    .play();
+// MagickSlider.findSlider("slider_block_1")
+//     .time(3000)
+//     .lineDuration(.2)
+//     .speed(0.1)
+//     .pagination(true)
+//     .animationDirection("PutToRight")
+//     .play();
+// //
+// //
+// MagickSlider.findSlider("slider_block_2")
+//     .time(2000)
+//     .lineDuration(.5)
+//     .speed(0.2)
+//     .pagination(true)
+//     .animationDirection("StepToLeft")
+//     .play();
 
 
 // MagickSlider.findSlider("slider_block_3")
