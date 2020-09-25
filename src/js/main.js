@@ -250,27 +250,44 @@
     return window.MagickSlider
 
 }))();
-//// Library is end
 
-//// Options for "Check slider out"  -- for portfolio
+MagickSlider.findSlider("slider_block_1")
+    .time(3000)
+    .lineDuration(.2)
+    .speed(0.1)
+    .pagination(true)
+    .animationDirection("PutToRight")
+    .play();
 
 
-// MagickSlider.findSlider("slider_block_1")
-//     .time(3000)
-//     .lineDuration(.2)
-//     .speed(0.1)
-//     .pagination(true)
-//     .animationDirection("PutToRight")
-//     .play();
-//
-//
-// MagickSlider.findSlider("slider_block_2")
+MagickSlider.findSlider("slider_block_2")
+    .time(2000)
+    .lineDuration(.5)
+    .speed(0.2)
+    .pagination(true)
+    .animationDirection("StepToLeft")
+    .play();
+
+
+// MagickSlider.findSlider("slider_block_3")
 //     .time(2000)
-//     .lineDuration(.5)
-//     .speed(0.2)
+//     // .speed(0.1)
+//     .animationDirection("PutToRight")
+//     // .lineDuration(2.8)
 //     .pagination(true)
-//     .animationDirection("StepToLeft")
+//     .play();
+
+// LineSlider.findSlider("picture_right")
+//     .time(3000)
+//     .speed(0.1)
+//     .animationName("StepToLeft")
+//     .pagination(true)
 //     .play();
 
 
+// LineSlider.findSlider("box")
+//     // .time(3000)
+//     // .speed(0.1)
+//     .animationName("StepToLeft")
+//     .play();
 
